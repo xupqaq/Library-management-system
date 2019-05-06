@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.BookDao">
+	<select id="getAllBook" resultType="book">
+		select * from t_book where status = '0' and booknum >= 0
+		<if test="bookName != null and bookName != ''">
+		 and bookname like '%'||#{bookName}||'%'
+		</if>
+		<if test="bookSort != null and bookSort != '' ">
+		 and booksort = #{bookSort}
+		</if>
+		<if test="author != null and author != ''">
+		 and bookauthor like '%'||#{author}||'%'
+		</if>
+		 order by BOOKRECORD desc
+	</select>
+	
+	<select id="getHostBook" resultType="book">
+		select * from t_book where status = '0' and booknum >= 0
+		<if test="bookName != null and bookName != ''">
+		 and bookname like '%'||#{bookName}||'%'
+		</if>
+		<if test="bookSort != null and bookSort != '' ">
+		 and booksort = #{bookSort}
+		</if>
+		<if test="author != null and author != ''">
+		 and bookauthor like '%'||#{author}||'%'
+		</if>
+		order by borrownum desc
+	</select>
+	
+	<select id="getBookName" parameterType="users" resultType="book">
+		select t1.bookid,t1.bookname from t_book t1,t_borrow t2 where t1.bookid = t2.bookid and t2.userid=#{userid}
+	</select>
+	
+	<update id="addBookNum">
+		update t_book set booknum=(booknum+1) where bookid = #{bookid}
+	</update>
+	
+	<update id="decBookNum">
+		update t_book set booknum=(booknum-1),borrownum=(borrownum+1) where bookid = #{bookid}
+	</update>
+	
+	<select id="getBookInfo" resultType="book">
+		select * from t_book where bookid=#{bookid }
+	</select>
+	
+	<update id="updatebook" parameterType="book">
+		update t_book set bookname=#{bookname},bookauthor=#{bookauthor},bookpub=#{bookpub},booknum=#{booknum},booksort=#{booksort},dec=#{dec} where bookid=#{bookid}
+	</update>
+	
+	<insert id="addbook" parameterType="book">
+		insert into t_book values(SEQUENCES_BOOKID.NEXTVAL,#{bookname},#{bookauthor},#{bookpub},#{booknum},#{booksort},sysdate,'0','0',#{dec})
+	</insert>
+	
+</mapper>

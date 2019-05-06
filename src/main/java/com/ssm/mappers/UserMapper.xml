@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.UserDao">
+
+	<select id="loginSys" parameterType="users" resultType="users">
+		select * from t_user where userid = #{userid,jdbcType=VARCHAR} and upwd = #{upwd,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateform" parameterType="users">
+		update t_user set uname=#{uname},usex=#{usex},phone=#{phone},classno=#{classno},uage=#{uage} where userid=#{userid}
+	</update>
+	
+	<update id="updatePwd" parameterType="users">
+		update t_user set upwd=#{upwd} where userid=#{userid}
+	</update>
+	
+	<select id="getuser" resultType="users">
+		select * from t_user where status!='0'
+	</select>
+	
+	<select id="getuser1" resultType="users">
+		select * from t_user where userid=#{userid}
+	</select>
+	
+</mapper>

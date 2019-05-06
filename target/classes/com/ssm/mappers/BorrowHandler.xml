@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.BorrowDao">
+
+<select id="getMyBorrow" parameterType="users" resultType="borrow">
+	select * from t_borrow where userid=#{userid} order by borrowtime desc
+</select>
+
+<select id="getBorrowList" parameterType="users" resultType="borrow">
+	select * from t_borrow where userid=#{userid} and isreturn ='0' order by borrowtime desc
+</select>
+
+<select id="isBorrow" resultType="borrow">
+	select * from t_borrow where userid=#{userid} and isreturn ='0'
+</select>
+
+<select id="isBorrowed" resultType="borrow">
+	select * from t_borrow where userid=#{userid} and bookid=#{bookid} and isreturn ='0'
+</select>
+
+<insert id="borrowBook" >
+	insert into t_borrow(borrowid,userid,bookid,returntime) values(sequences_borrowid.nextval,#{userid},#{bookid},#{returntime})
+</insert>
+
+<update id="returnBook">
+	update t_borrow set isreturn = '1' , realreturntime = sysdate where borrowid=#{borrowid}
+</update>
+
+</mapper>
